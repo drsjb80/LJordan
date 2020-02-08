@@ -13,16 +13,8 @@ from sqlalchemy.sql import select
 
 from geolite2 import geolite2
 
-from hpotter.env import db, jsonserverport
-from hpotter.tables import Base, Connections
-
-# http://codeandlife.com/2014/12/07/sqlalchemy-results-to-json-the-easy-way/
-
-engine = create_engine(db) #, echo=True)
-session = sessionmaker(bind=engine)
-session = session()
-# magic to get all the tables.
-Base.metadata.reflect(bind=engine)
+import env
+from tables import Base, Connections
 
 def minutes_ago(diff):
     return datetime.datetime.utcnow() - datetime.timedelta(minutes=diff)
@@ -183,11 +175,22 @@ class JSONHandler(SimpleHTTPRequestHandler):
         else:
             self.wfile.write(dump.encode())
 
-try:
-    os.chdir('hpotter/dashboard')
-    server = HTTPServer(('', jsonserverport), JSONHandler)
-    server.serve_forever()
+if __name__ == "__main__":
 
-except KeyboardInterrupt:
-    print('Shutting down the web server')
-    server.socket.close()
+    dbUrl = os.path.join(env.uriScheme, env.dbPath)
+
+    # # http://codeandlife.com/2014/12/07/sqlalchemy-results-to-json-the-easy-way/
+    engine = create_engine(dbUrl) #, echo=True)
+    session = sessionmaker(bind=engine)
+    session = session()
+    # magic to get all the tables.
+    Base.metadata.reflect(bind=engine)
+
+    try:
+        # os.chdir('hpotter/dashboard')
+        server = HTTPServer(('', env.jsonserverport), JSONHandler)
+        server.serve_forever()
+
+    except KeyboardInterrupt:
+        print('Shutting down the web server')
+        server.socket.close()
