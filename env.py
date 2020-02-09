@@ -13,8 +13,7 @@
 # doesn't work with threads.
 
 uriScheme = 'sqlite:///'
-dbPath = '../hpotter/main.db'
-db = 'sqlite:///main.db'
+dbPath = '../HPotter/main.db'
 jsonserverport = 8000
 
 # engine = create_engine(db)
