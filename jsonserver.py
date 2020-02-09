@@ -3,6 +3,7 @@ import decimal
 import json
 import os
 import ipaddress
+import logging
 
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
@@ -177,7 +178,12 @@ class JSONHandler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
 
+    loggingFormat = '%(filename)s:%(lineno)d:%(levelname)s:%(message)s'
+    logging.basicConfig(format=loggingFormat, level=logging.DEBUG)
+
     dbUrl = os.path.join(env.uriScheme, env.dbPath)
+
+    logging.debug('Creating DB from url:\n\t%s', dbUrl)
 
     # # http://codeandlife.com/2014/12/07/sqlalchemy-results-to-json-the-easy-way/
     engine = create_engine(dbUrl) #, echo=True)
@@ -186,11 +192,12 @@ if __name__ == "__main__":
     # magic to get all the tables.
     Base.metadata.reflect(bind=engine)
 
+    logging.debug('DB connection successful')
+
     try:
-        # os.chdir('hpotter/dashboard')
         server = HTTPServer(('', env.jsonserverport), JSONHandler)
         server.serve_forever()
 
     except KeyboardInterrupt:
-        print('Shutting down the web server')
+        logging.info('Shutting down the web server')
         server.socket.close()
