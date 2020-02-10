@@ -15,8 +15,14 @@ INSTALL necessary packages:
 CONFIGURE the location of the database
 
 This package assumes:
-* HPotter stores data in a sqlite database named main.db
-* The HPotter module dir is located in the same dir as LJordan
+* HPotter stores data in a sqlite database located at .../HPotter/main.db
+* The HPotter and LJordan modules are in the same directory
+```
+    .../
+        HPotter/
+            main.db
+        LJordan/
+```
 
 To change the path to main.db, update the `dbPath` in env.py.
 
