@@ -1,0 +1,27 @@
+---
+Connections:
+  - sourceIP: '127.0.0.1'
+    sourcePort: 80
+    destIP: '127.0.0.1'
+    destPort: 80
+    proto: 1
+  - sourceIP: '127.0.0.2'
+    sourcePort: 8080
+    destIP: '127.0.0.2'
+    destPort: 8080
+    proto: 2
+
+ShellCommands:
+  - command: 'echo major pwnage'
+    connections_id: 1
+  - command: 'cd / && ls -1G'
+    connections_id: 2
+
+Credentials:
+  - username: 'darth'
+    password: 'theForceIsWrongWithThisOne'
+    connections_id: 1
+  - username: 'voldemort'
+    password: 'scaredOnTheInside'
+    connections_id: 2
+...
