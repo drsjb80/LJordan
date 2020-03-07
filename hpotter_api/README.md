@@ -29,6 +29,13 @@ A graphene-sqlalchemy api to request data from the HPotter database
 * POSTed JSON must be valid GraphQL syntax
 * See GraphQL resources for GraphQL syntax
 
+Querying can be done from any convenient tool that can send HTTP POST requests, for example curl, Postman, or JavaScript.
+
+Here is an example with `curl`
+
+    `curl localhost:8080 --header Content-Type:application/json --data \
+    '{"query":"{allCredentials{edges{node{username\n password\n connections{destIP\n destPort}}}}}"}'`
+
 ## Sample Query Bodies
 
 * Get all credentials and their related entries in the connections table
