@@ -2,4 +2,3 @@
 logging_format: '%(filename)s:%(lineno)d:%(levelname)s:%(message)s'
 dbUrl: 'sqlite:///db.sqlite3'
 port: 8080
-...
