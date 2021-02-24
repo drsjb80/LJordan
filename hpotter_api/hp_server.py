@@ -9,13 +9,22 @@ from .config import port
 
 class PostHandler(SimpleHTTPRequestHandler):
 
+    def _send_cors_headers(self):
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "x-api-key,Content-Type")
+
     def bad_request_resp(self):
         self.send_response(HTTPStatus.BAD_REQUEST)
         self.send_header('Content-Length', 0)
         self.end_headers()
 
-    def do_POST(self):
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self._send_cors_headers()
+        self.end_headers()
 
+    def do_POST(self):
         req_content_type = self.headers.get('Content-Type', False)
         if not req_content_type or req_content_type != 'application/json':
             self.bad_request_resp()
@@ -36,6 +45,7 @@ class PostHandler(SimpleHTTPRequestHandler):
         result = dumps(result)
 
         self.send_response(HTTPStatus.OK)
+        self._send_cors_headers()
         self.send_header('Content-Type', 'application/json')
         self.end_headers()
 
