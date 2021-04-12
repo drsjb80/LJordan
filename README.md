@@ -31,17 +31,20 @@ A graphene-sqlalchemy api to request data from the HPotter database
 
 Querying can be done from any convenient tool that can send HTTP POST requests, for example curl, Postman, or JavaScript.
 
-Here is an example with `curl`
+Here are some examples with `curl`
 
-    `curl localhost:8080 --header Content-Type:application/json --data \
-    '{"query":"{allCredentials{edges{node{username\n password\n connections{destIP\n destPort}}}}}"}'`
+    `curl -X POST localhost:8080 -H "Content-Type:application/json" \
+        --data '{"query":"{allCredentials{edges{node{username password connections{destinationAddress destinationPort}}}}}"}'`
+    
+    `curl -X POST localhost:8080 -H "Content-Type:application/json" \
+        --data '{"query":"{allConnections{edges{node{sourceAddress sourcePort destinationAddress destinationPort latitude longitude}}}}"}'`
 
 ## Sample Query Bodies
 
 * Get all credentials and their related entries in the connections table
   * Raw JSON
 
-    `{"query":"{allCredentials{edges{node{username\n password\n connections{destIP\n destPort}}}}}"}`
+    `{"query":"{allCredentials{edges{node{username password connections{destinationAddress destinationPort}}}}}"}`
 
   * Pretty JSON
 
@@ -53,8 +56,8 @@ Here is an example with `curl`
                     username
                     password
                     connections {
-                        destIP
-                        destPort
+                        destinationAddress
+                        destinationPort
                     }
                 }
             }
